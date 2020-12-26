@@ -235,10 +235,7 @@
 	</head>
 	<body>
     <div class="wrap" id="wrap" v-cloak>
-      <div class="music_icon" @click="pause">
-        <img src="./img/music.png" alt="">
-      </div>
-      <audio autoplay="autoplay" loop="loop" preload="auto" id="audio">  
+      <audio autoplay="autoplay" loop="loop" preload="auto">  
        <source src="./mp3/music.mp3" />
       </audio>
       <!-- 投票未开始跳动的字 -->
@@ -293,11 +290,6 @@
           vm.foodList = list || []
         },
         methods: {
-          pause: function() {
-            vm.$nextTick(() => {
-              vm.$refs['audio'].pause()
-            })
-          },
           // 添加
           add: function() {
             if (!vm.value) {
