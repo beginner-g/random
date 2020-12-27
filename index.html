@@ -287,14 +287,20 @@
         },
         mounted() {
           vm.$nextTick(() => {
-            let audio = document.getElementById('#bgmusic');
-              // 兼容微信浏览器自动播放
-              document.addEventListener("WeixinJSBridgeReady", function () {
-                audio.play();
-              }, false);
+           document.addEventListener('touchstart', vm.initAutoPlay, false); // 解决部分浏览器禁止自动播放问题
+           document.addEventListener('WeixinJSBridgeReady', vm.playAudio, false); // 解决微信浏览器
           })
         },
         methods: {
+          initAutoPlay: function() {
+            let audio = document.getElementById('#bgmusic');
+            audio.play();
+            document.removeEventListener('touchstart', vm.initAutoPlay, false);
+          },
+          playAudio: function() {
+            let audio = document.getElementById('#bgmusic');
+            audio.play();
+          },
           // 添加
           add: function() {
             if (!vm.value) {
