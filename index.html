@@ -226,7 +226,7 @@
 	</head>
 	<body>
     <div class="wrap" id="wrap" v-cloak>
-      <audio autoplay="autoplay" loop="loop" preload="auto">  
+      <audio autoplay="autoplay" loop="loop" preload="auto" id="bgmusic">  
        <source src="./mp3/music.mp3" />
       </audio>
       <!-- 投票未开始跳动的字 -->
@@ -284,6 +284,15 @@
           } else {
             vm.food = '暂无美食'
           }
+        },
+        mounted() {
+          vm.$nextTick(() => {
+            let audio = document.getElementById('#bgmusic');
+              // 兼容微信浏览器自动播放
+              document.addEventListener("WeixinJSBridgeReady", function () {
+                audio.play();
+              }, false);
+          })
         },
         methods: {
           // 添加
