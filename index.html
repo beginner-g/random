@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
 		<title>小李的美味食刻</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@1.6/lib/index.css">
     <style type="text/css">
@@ -53,25 +53,15 @@
         height: 100vh;
         background: url(img/bg.jpeg) no-repeat;
         background-size: 100% 100%;
+        position: relative;
+        bottom: 0;
+        left: 0;
+        right: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
         padding: 0 40px;
         box-sizing: border-box;
-        position: relative;
-      }
-      .music_icon {
-        position: absolute;
-        top: 42px;
-        right: 25px;
-        width: 36px;
-        height: 36px;
-      }
-      .music_icon img {
-        width: 100%;
-        height: 100%;
-        animation:circleRoate 1s linear infinite;
-        transform: rotate(45deg);
       }
       .bounce {
         display: flex;
@@ -145,7 +135,7 @@
       }
       .add-item {
         width: 100%;
-        margin-top: 120px;
+        margin-top: 100px;
         display: flex;
         align-items: center;
       }
@@ -157,6 +147,7 @@
         border: 2px solid #decb6a;
         font-size: 18px;
         padding-left: 10px;
+        box-sizing: border-box;
         color: #e0cd6b;
       }
       .add_btn {
@@ -235,10 +226,7 @@
 	</head>
 	<body>
     <div class="wrap" id="wrap" v-cloak>
-      <div class="music_icon" @click="pause">
-        <img src="./img/music.png" alt="">
-      </div>
-      <audio autoplay="autoplay" loop="loop" preload="auto" id="audio">  
+      <audio autoplay="autoplay" loop="loop" preload="auto">  
        <source src="./mp3/music.mp3" />
       </audio>
       <!-- 投票未开始跳动的字 -->
@@ -254,7 +242,7 @@
         <span class="letter">？</span>
       </div>
       <div class="add-item">
-        <input class="input" type="text" v-model="value" placeholder="请输入美食">
+        <input class="input" type="text" v-model="value" placeholder="添加美食">
         <span class="add_btn" @click="add">添 加</span>
       </div>
       <div class="content">
@@ -291,13 +279,13 @@
         created: function () {
           let list = JSON.parse(localStorage.getItem('list'))
           vm.foodList = list || []
+          if (vm.foodList.length) {
+            vm.food = vm.foodList[0]
+          } else {
+            vm.food = '暂无美食'
+          }
         },
         methods: {
-          pause: function() {
-            vm.$nextTick(() => {
-              vm.$refs['audio'].pause()
-            })
-          },
           // 添加
           add: function() {
             if (!vm.value) {
@@ -346,13 +334,13 @@
               num ++
               if (num == 30) {
                 vm.$toast({
-                  message: '恭喜小李同学，你成功抽中了'+vm.food +'哦！那我们一起去干饭吧！'
+                  message: '恭喜小李同学，你抽中了'+vm.food +'哦！我们一起去干饭吧！',
+                  duration: 3000
                 });
                 clearInterval(timer)
                 return
               }
-            },100)
-            console.log(vm.food)
+            },50)
           }
         }
       })
